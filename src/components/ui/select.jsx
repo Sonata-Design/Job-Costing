@@ -1,7 +1,13 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-const Select = React.forwardRef(({ className, children, ...props }, ref) => {
+// Custom Select Component that properly handles onChange and value
+const Select = React.forwardRef(({ className, children, onValueChange, value, defaultValue, ...props }, ref) => {
+  // Handle the custom onValueChange prop to work like standard onChange
+  const handleChange = (e) => {
+    if (onValueChange) onValueChange(e.target.value);
+  };
+  
   return (
     <select
       className={cn(
@@ -9,6 +15,9 @@ const Select = React.forwardRef(({ className, children, ...props }, ref) => {
         className
       )}
       ref={ref}
+      value={value}
+      defaultValue={defaultValue}
+      onChange={handleChange}
       {...props}
     >
       {children}
@@ -44,37 +53,19 @@ const SelectValue = React.forwardRef(({ className, ...props }, ref) => {
 });
 SelectValue.displayName = "SelectValue";
 
+// Modified to work with native select properly
 const SelectContent = React.forwardRef(({ className, children, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80",
-        className
-      )}
-      {...props}
-    >
-      <div className="p-1">{children}</div>
-    </div>
-  );
+  // We'll just pass children through since native select doesn't support custom containers
+  return <>{children}</>;
 });
 SelectContent.displayName = "SelectContent";
 
+// Convert to option element for native select
 const SelectItem = React.forwardRef(({ className, children, ...props }, ref) => {
   return (
-    <div
-      ref={ref}
-      className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className
-      )}
-      {...props}
-    >
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        <span className="h-2 w-2 rounded-full bg-primary" />
-      </span>
-      <span className="truncate">{children}</span>
-    </div>
+    <option ref={ref} {...props}>
+      {children}
+    </option>
   );
 });
 SelectItem.displayName = "SelectItem";

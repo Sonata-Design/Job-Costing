@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { PRESET_COST_ITEMS } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Form,
   FormControl,
   FormDescription,
@@ -14,25 +14,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import {
+  Textarea,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+  Separator
+} from "@/components/ui";
 import { PlusCircle, Trash2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { submitJobCostData } from "@/app/actions"; // Import the server action
@@ -41,6 +37,7 @@ const formSchema = z.object({
   address: z.string().min(1, "Address is required"),
   jobNumber: z.string().min(1, "Job number is required"),
   maximizerId: z.string().min(1, "Maximizer ID is required"),
+  maximizerAbId: z.string().min(1, "Maximizer AB ID is required"),
   costItems: z
     .array(
       z.object({
@@ -66,6 +63,7 @@ export default function JobCostForm() {
       address: "",
       jobNumber: "",
       maximizerId: "",
+      maximizerAbId: "",
       costItems: [{ id: crypto.randomUUID(), ...defaultCostItem }],
     },
     mode: "onChange", 
@@ -189,11 +187,11 @@ export default function JobCostForm() {
     <Card className="w-full max-w-4xl mx-auto shadow-xl">
       <CardHeader>
         <CardTitle className="text-2xl font-bold tracking-tight">JobCost Pro</CardTitle>
-        <CardDescription>Enter job details and cost items. Data will be saved to MongoDB.</CardDescription>
+        <CardDescription>Enter job details and cost items.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Remove nested forms - use just one form element */}
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <section className="space-y-4">
               <h2 className="text-xl font-semibold text-primary">Job Information</h2>
               <div className="grid md:grid-cols-2 gap-6">
@@ -224,19 +222,34 @@ export default function JobCostForm() {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="maximizerId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Maximizer ID</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., MAX-7890" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="maximizerId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Maximizer ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., MAX-7890" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="maximizerAbId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Maximizer AB ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., AB-1234" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </section>
 
             <Separator />
@@ -266,25 +279,20 @@ export default function JobCostForm() {
                     render={({ field: itemField }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Item</FormLabel>
-                         <Select
-                          onValueChange={itemField.onChange}
-                          value={itemField.value}
-                          defaultValue={itemField.value}
-                          disabled={isSubmitting}
-                         >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select cost item" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {PRESET_COST_ITEMS.map((presetItem) => (
-                              <SelectItem key={presetItem} value={presetItem}>
-                                {presetItem}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                         <FormControl>
+                           <Select
+                             onChange={itemField.onChange}
+                             value={itemField.value || ""}
+                             disabled={isSubmitting}
+                           >
+                             <option value="" disabled>Select cost item</option>
+                             {PRESET_COST_ITEMS.map((presetItem) => (
+                               <option key={presetItem} value={presetItem}>
+                                 {presetItem}
+                               </option>
+                             ))}
+                           </Select>
+                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -366,7 +374,6 @@ export default function JobCostForm() {
               </Button>
             </CardFooter>
           </form>
-        </Form>
       </CardContent>
     </Card>
   );

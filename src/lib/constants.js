@@ -1,11 +1,13 @@
 export const PRESET_COST_ITEMS = [
   "311 Soft Goods",
   "322 Hard Goods",
-  "333 Equipment",
-  "344 Labor",
-  "355 Permits",
-  "366 Consulting",
-  "377 Transportation",
-  "388 Misc Expenses",
-  "399 Contingency"
+  "326 Measure",
+  "336 Furniture",
+  "341 Commercial Labour",
+  "346 Workroom Labour",
+  "350 Installation",
+  "366 Trip Charge",
+  "391 Freight and Delivery",
+  "399 referral",
+  "400 Contingency"
 ];

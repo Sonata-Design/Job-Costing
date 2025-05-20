@@ -65,6 +65,26 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
 });
 FormMessage.displayName = "FormMessage";
 
+// Create a proper FormField component for react-hook-form
+import { Controller } from "react-hook-form";
+
+const FormField = ({
+  name,
+  control,
+  render,
+  ...props
+}) => {
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState }) => render({ field, fieldState })}
+      {...props}
+    />
+  );
+};
+FormField.displayName = "FormField";
+
 export {
   Form,
   FormItem,
@@ -72,4 +92,5 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormField,
 };

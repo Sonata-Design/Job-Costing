@@ -8,13 +8,14 @@ datasource db {
 }
 
 model JobCost {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  address     String
-  jobNumber   String
-  maximizerId String
-  costItems   CostItem[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  address      String
+  jobNumber    String
+  maximizerId  String
+  maximizerAbId String
+  costItems    CostItem[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
   @@map("job_costs")
 }
