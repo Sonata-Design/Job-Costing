@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model JobCost {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  address     String
+  jobNumber   String
+  maximizerId String
+  costItems   CostItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("job_costs")
+}
+
+model CostItem {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  item       String
+  vendor     String
+  value      Float
+  jobCost    JobCost  @relation(fields: [jobCostId], references: [id])
+  jobCostId  String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("cost_items")
+}
