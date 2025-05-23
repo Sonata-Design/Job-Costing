@@ -1,8 +1,12 @@
 import "@/styles/globals.css";
 
 export const metadata = {
-  title: "JobCost Pro - Cost Management Tool",
+  title: "Job Costing Tool - Automation Tool",
   description: "A professional tool for tracking and managing job costs",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

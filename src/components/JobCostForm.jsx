@@ -162,6 +162,7 @@ export default function JobCostForm() {
           address: "",
           jobNumber: "",
           maximizerId: "",
+          maximizerAbId: "",
           costItems: [{ id: crypto.randomUUID(), ...defaultCostItem }],
         });
       } else {
@@ -185,9 +186,9 @@ export default function JobCostForm() {
 
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-xl">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold tracking-tight">JobCost Pro</CardTitle>
-        <CardDescription>Enter job details and cost items.</CardDescription>
+            <CardHeader>
+        <CardTitle className="text-2xl font-bold tracking-tight">Job Costing Automation</CardTitle>
+        <p className="text-sm text-muted-foreground"><span className="text-destructive">*</span> indicates required fields</p>
       </CardHeader>
       <CardContent>
         {/* Remove nested forms - use just one form element */}
@@ -213,7 +214,7 @@ export default function JobCostForm() {
                   name="jobNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Job Number</FormLabel>
+                      <FormLabel>Job Number <span className="text-destructive">*</span></FormLabel>
                       <FormControl>
                         <Input placeholder="e.g., JN2024-001" {...field} />
                       </FormControl>
@@ -228,7 +229,7 @@ export default function JobCostForm() {
                   name="maximizerId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Maximizer ID</FormLabel>
+                      <FormLabel>Maximizer ID <span className="text-destructive">*</span></FormLabel>
                       <FormControl>
                         <Input placeholder="e.g., MAX-7890" {...field} />
                       </FormControl>
@@ -241,7 +242,7 @@ export default function JobCostForm() {
                   name="maximizerAbId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Maximizer AB ID</FormLabel>
+                      <FormLabel>Maximizer AB ID <span className="text-destructive">*</span></FormLabel>
                       <FormControl>
                         <Input placeholder="e.g., AB-1234" {...field} />
                       </FormControl>

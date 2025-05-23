@@ -1,4 +1,4 @@
-// File: C:\Users\Owner\OneDrive\Desktop\Job-Costing\src\app\layout.js
+// File: C:\Users\Owner\OneDrive\Desktop\Flowchart\Job-Costing\src\app\layout.js
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
